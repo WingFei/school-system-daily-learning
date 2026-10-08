@@ -32,3 +32,7 @@ No build, database, API key or external scripts are needed. Print / Save as PDF 
 6. Commit the files. Once Pages is configured, it publishes from the configured branch.
 
 No automatic content-generation schedule has been configured. Publishing a page does not generate tomorrow's briefing.
+
+## School Management System development
+
+- [Phase 1 — ASP.NET Core, Blazor Interactive Server, EF Core, MariaDB and DevExpress Blazor](guides/new-school-management-system-phase-1.md): architecture, setup, service and persistence examples, migrations and verification checklist.
