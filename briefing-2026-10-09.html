@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Practical daily learning for school management system developers: architecture, improvements, tools and user experience."><title>School System Daily Learning · 9 October 2026</title><style>
+:root{--ink:#14243a;--muted:#52647a;--blue:#135bd5;--line:#dce4ef;--paper:#fff;--bg:#f2f5fa}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);text-underline-offset:4px}a:focus-visible,button:focus-visible{outline:3px solid #e59b16;outline-offset:4px}header{background:#102744;color:white;padding:24px max(24px,calc((100vw - 1180px)/2))}header a{color:white}header .brand{font-weight:750;font-size:20px;text-decoration:none}header nav{margin-top:10px;display:flex;gap:24px;flex-wrap:wrap}.layout{max-width:1180px;margin:36px auto;display:grid;grid-template-columns:240px minmax(0,1fr);gap:32px;padding:0 24px}aside{align-self:start;position:sticky;top:24px}aside nav{display:grid;gap:12px}aside a{text-decoration:none;font-size:15px}aside p{color:var(--muted);font-size:14px}article{background:var(--paper);border:1px solid var(--line);padding:clamp(22px,4vw,48px);border-radius:16px;min-width:0}.meta{font-size:14px;font-weight:650;color:var(--blue)}h1{font-size:clamp(30px,4vw,44px);line-height:1.15;letter-spacing:-1px;margin:14px 0 20px}h2{font-size:27px;line-height:1.35;margin:44px 0 18px;padding-top:26px;border-top:1px solid var(--line)}h3{font-size:21px;line-height:1.4;margin:30px 0 10px}p{margin:12px 0}li{margin:7px 0}.lead{font-size:20px;color:var(--muted)}.note{background:#edf4ff;border-left:4px solid var(--blue);padding:16px 20px;margin:22px 0;border-radius:0 8px 8px 0}.tag{display:inline-block;font-size:13px;font-weight:700;background:#eaf2ff;color:#154f9f;padding:3px 10px;border-radius:6px}.tools{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}button,.button{background:var(--blue);color:white;border:0;border-radius:8px;padding:11px 16px;font:600 15px system-ui;cursor:pointer;text-decoration:none}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:15px;margin:18px 0}th,td{text-align:left;vertical-align:top;padding:12px;border:1px solid var(--line)}th{background:#edf2f8}pre{background:#12233c;color:#e7efff;padding:20px;border-radius:10px;overflow:auto;font:14px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em}footer{font-size:14px;color:var(--muted);max-width:1180px;margin:24px auto;padding:0 24px 30px}.closing{background:#102744;color:white;padding:20px 24px;border-radius:12px;margin-top:30px}.closing strong{color:#a9c9ff}.source{font-size:14px;color:var(--muted)}@media(max-width:850px){.layout{grid-template-columns:1fr;margin:20px auto;gap:20px;padding:0 16px}aside{position:static}aside nav{display:flex;flex-wrap:wrap;gap:10px 18px}aside p{display:none}article{border-radius:12px}h2{font-size:24px}header{padding:20px}}@media print{body{background:white;font-size:11pt;color:black}header,aside,.tools,footer{display:none}.layout{display:block;padding:0;margin:0;max-width:none}article{border:0;padding:0}h1{font-size:25pt}h2{font-size:18pt;break-after:avoid}h3{break-after:avoid}pre{white-space:pre-wrap;background:#f1f1f1;color:black;font-size:9pt}a{color:black}.note,.closing{background:#eee;color:black}.closing strong{color:black}.table-wrap{overflow:visible}tr{break-inside:avoid}}
+</style></head><body><header><a class="brand" href="./index.html">School System Daily Learning</a><nav aria-label="Main navigation"><a href="./index.html">Latest briefing</a><a href="./archive.html">Briefing archive</a></nav></header><div class="layout"><aside><nav aria-label="Briefing sections"><a href="#lesson">01 · Development lesson</a><a href="#ideas">02 · Improvement ideas</a><a href="#news">03 · News &amp; tools</a><a href="#behaviour">04 · System behaviour</a><a href="#exercise">05 · Practical exercise</a><a href="#sources">Official sources</a></nav><p>Built for Singapore school, tuition centre, PEI and training-system developers.</p></aside><main><article>
+<div class="meta">9 OCTOBER 2026 · SINGAPORE · 10–15 MIN READ &amp; REFLECTION</div>
+<h1>Start Phase 1 as a modular monolith.</h1>
+<p class="lead">Keep one deployable school system, but give every module a clear purpose, owner and boundary.</p>
+<p>Yesterday we turned workflow rules into tests. Today we decide where those rules belong. This is the architectural foundation for your new school management system and a practical way to improve the existing VB.NET system gradually.</p>
+<div class="note"><strong>Reading guide:</strong> The proposed architecture, module list and priorities are recommendations. “Confirmed” identifies facts checked against official sources on 9 October 2026. Your newer stack direction—ASP.NET Core, C#, Blazor Interactive Server, EF Core, MariaDB and DevExpress Blazor—is included; the same application boundaries also work if a React front end is retained.</div>
+<div class="tools"><button type="button" onclick="window.print()">Print / Save as PDF</button><a class="button" href="./archive.html">Browse archive</a></div>
+<section id="lesson"><h2>1. Developing a new school management system</h2>
+<h3>Today’s lesson: separate modules without starting with microservices</h3>
+<p>A <strong>modular monolith</strong> is one deployable application whose internal modules have explicit responsibilities. Admissions, enrolment and finance may run in the same process and database initially, but they do not treat every table and class as shared property.</p>
+<p>This is a good Phase 1 default for a small development team: deployment, debugging and transactions remain manageable. You still prepare for future growth by separating business rules from the UI and assigning each important record to one module.</p>
+<p>Do not split the first release into many network services merely because the system has many menu items. A microservice adds independent deployment, monitoring, network failure, versioning and data-consistency work. Split a module later only when there is a concrete reason such as independent scaling, a separate team, a different availability requirement or a stable integration boundary.</p>
+<h3>Proposed module map</h3>
+<div class="table-wrap"><table><thead><tr><th>Module</th><th>Owns</th><th>May provide to others</th></tr></thead><tbody>
+<tr><td>Identity &amp; Access</td><td>Staff accounts, roles, permissions, centre scope, sign-in history</td><td>Current identity and authorised capabilities</td></tr>
+<tr><td>People</td><td>Student, parent/guardian and staff profiles; contact relationships</td><td>Verified person identifiers and contact summaries</td></tr>
+<tr><td>Academic Structure</td><td>Courses, subjects, intakes, classes, terms, centres and rooms</td><td>Active academic reference data</td></tr>
+<tr><td>Admissions</td><td>Applications, drafts, documents, review decisions and offers</td><td>Accepted applicant and offer outcome</td></tr>
+<tr><td>Enrolment</td><td>Student-course/intake relationship, status changes and transfers</td><td>Active enrolment and class eligibility</td></tr>
+<tr><td>Attendance</td><td>Sessions, check-ins, check-outs, corrections and finalisation</td><td>Attendance summaries and exceptions</td></tr>
+<tr><td>Assessment</td><td>Assessment setup, marks, moderation and publication</td><td>Published results and progress summaries</td></tr>
+<tr><td>Finance</td><td>Fee rules, charges, invoices, receipts, adjustments and reconciliation</td><td>Balance and payment status</td></tr>
+<tr><td>Communications</td><td>Templates, recipient snapshots, delivery requests and outcomes</td><td>Message delivery history</td></tr>
+<tr><td>Reporting &amp; Audit</td><td>Read models, exports and audit views</td><td>Authorised operational and management information</td></tr>
+</tbody></table></div>
+<p>This list is a starting map, not ten separate applications. Phase 1 can begin with Identity &amp; Access, People, Academic Structure, Admissions and Enrolment. Add Attendance and Finance when their end-to-end workflows are ready.</p>
+<h3>Give each record one owner</h3>
+<p>Ownership answers: “Which module is allowed to create and change this record?” Admissions owns an application. People owns the person profile. Enrolment owns the student’s relationship to an intake. Finance owns the invoice.</p>
+<p>When an application is accepted, Admissions should not directly update every enrolment and finance table. It submits a defined command or publishes an internal event. Enrolment creates the enrolment using its own rules; Finance creates charges only when the fee policy requires them.</p>
+<div class="table-wrap"><table><thead><tr><th>Handoff</th><th>Recommended contract</th><th>Avoid</th></tr></thead><tbody>
+<tr><td>Admissions → People</td><td>Create or match person using verified identity/contact data</td><td>Admissions writing directly into profile tables</td></tr>
+<tr><td>Admissions → Enrolment</td><td>Accept offer with application, person, intake and effective date</td><td>Duplicating enrolment rules in the offer page</td></tr>
+<tr><td>Enrolment → Finance</td><td>Request initial charge with enrolment and fee-plan references</td><td>A database trigger that hides business decisions</td></tr>
+<tr><td>Attendance → Reporting</td><td>Expose finalised attendance summary</td><td>Reports interpreting raw correction history differently</td></tr>
+</tbody></table></div>
+<p>Within the first monolith, these contracts can be C# interfaces and application commands. They do not have to be HTTP calls or a message broker. The boundary is conceptual and enforced by project references, namespaces, reviews and tests.</p>
+<h3>Practical Phase 1 solution structure</h3>
+<pre><code>SchoolSystem.sln
+├─ src/
+│  ├─ SchoolSystem.Web
+│  │  └─ Blazor pages/components, DevExpress UI, authentication shell
+│  ├─ SchoolSystem.Application
+│  │  └─ Use cases, commands, queries, validation, permissions
+│  ├─ SchoolSystem.Domain
+│  │  └─ Business entities, value objects and rules
+│  └─ SchoolSystem.Infrastructure
+│     └─ EF Core, MariaDB provider, files, email and external adapters
+└─ tests/
+   ├─ SchoolSystem.UnitTests
+   └─ SchoolSystem.IntegrationTests</code></pre>
+<p>Start with these four production projects rather than one project per module. Organise each project by module folders such as <code>Admissions</code>, <code>People</code> and <code>Enrolment</code>. If a module becomes large and stable enough, it can move to separate projects later.</p>
+<p><strong>Allowed reference direction:</strong> Web → Application; Infrastructure → Application/Domain; Application → Domain. Domain should not reference Web, DevExpress, EF Core or MariaDB packages. This keeps core rules testable and prevents a UI control or database provider from becoming the business model.</p>
+<p><strong>Confirmed:</strong> Microsoft’s architecture guidance recommends keeping presentation responsibility in the UI, data access in infrastructure and business logic in the application core. <a href="https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/architectural-principles">Official architectural principles</a>, updated <strong>9 May 2023</strong>.</p>
+<h3>A small command boundary</h3>
+<p>The UI sends intent to the application layer. It should not assemble database rows itself.</p>
+<pre><code>public sealed record AcceptOfferCommand(
+    Guid ApplicationId,
+    Guid IntakeId,
+    DateOnly EffectiveDate,
+    byte[] OriginalVersion);
+
+public interface IAdmissionsService
+{
+    Task&lt;AcceptOfferResult&gt; AcceptOfferAsync(
+        AcceptOfferCommand command,
+        CurrentStaff staff,
+        CancellationToken cancellationToken);
+}</code></pre>
+<p>The service loads the application, checks permission and current state, performs matching/creation through defined module interfaces, and records the audit result. A Blazor component or React page displays the outcome. DevExpress components handle presentation and interaction; they do not decide whether an offer may be accepted.</p>
+<h3>Blazor Interactive Server affects deployment, not module ownership</h3>
+<p><strong>Confirmed:</strong> Microsoft documents Interactive Server as interactive server-side rendering using a real-time browser connection. Blazor Web Apps can use static server rendering, Interactive Server, Interactive WebAssembly or Interactive Auto. <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes?view=aspnetcore-10.0">Official render-mode guidance</a>, updated <strong>26 August 2026</strong>.</p>
+<p>For your internal staff system, Interactive Server can reduce front-end duplication because C# runs on the server. Plan for connection loss, reconnection messages, server capacity and load-balanced deployment if you scale out. Keep draft application data in the database rather than only in a user’s live circuit.</p>
+<p>For a public applicant portal, evaluate network conditions and hosting scale before choosing a render mode. React remains a valid client option if your team prefers an API-first UI. In either case, the application and domain layers should own the rules.</p>
+<h3>Database/provider compatibility is an architectural decision</h3>
+<p>EF Core is not the MariaDB provider itself. Verify the exact combination of .NET, EF Core, provider and MariaDB Server before fixing the baseline.</p>
+<p><strong>Confirmed:</strong> the latest published Pomelo EF Core MySQL provider release visible on 9 October 2026 is <a href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/releases/tag/9.0.0">9.0.0</a>, published <strong>17 August 2025</strong>. Its release notes state compatibility with EF Core 9.0.x and testing against MariaDB through 11.6 among the listed versions. They do not claim EF Core 10 or MariaDB 13 compatibility.</p>
+<div class="note"><strong>Recommendation:</strong> Before creating the production solution, make a one-page version matrix covering .NET, EF Core, database provider, MariaDB Server and DevExpress Blazor. Choose only a combination explicitly supported by every critical dependency. “Newest” is not automatically the safest baseline.</div>
+<h3>Improve the existing VB.NET system with the same boundaries</h3>
+<div class="table-wrap"><table><thead><tr><th>Legacy improvement</th><th>New-system equivalent</th></tr></thead><tbody>
+<tr><td>Move admission approval out of code-behind into a VB service class</td><td>Application command/service</td></tr>
+<tr><td>Keep SQL access in repositories or focused data-access classes</td><td>Infrastructure project with EF Core</td></tr>
+<tr><td>Give each table group a named business owner in documentation</td><td>Module ownership enforced by code structure</td></tr>
+<tr><td>Use stored procedures only for clear data operations, not hidden cross-module policy</td><td>Domain/application rules with explicit persistence</td></tr>
+<tr><td>Add tests around extracted rules before changing them</td><td>Unit and integration test projects from day one</td></tr>
+</tbody></table></div>
+</section>
+<section id="ideas"><h2>2. New ideas for system improvement</h2>
+<h3>A. Intake readiness checklist</h3><span class="tag">NOW · MEDIUM EFFORT</span>
+<p><strong>Problem and users:</strong> Admissions staff open an intake before fees, documents, schedules or application rules are complete. Applicants then encounter missing options and staff perform manual corrections.</p>
+<p><strong>Workflow:</strong> Before an intake becomes “Open for Application”, the system checks named prerequisites: active course/intake dates, application form, required-document set, fee plan, capacity policy, offer template and responsible staff. The owner sees Passed, Warning or Blocking items and resolves them before activation.</p>
+<p><strong>Benefits and measures:</strong> Fewer incomplete intakes and post-opening fixes. Measure blocked activation issues found, applicant errors, staff correction time and intakes opened with unresolved warnings.</p>
+<p><strong>Data/integrations:</strong> Academic structure, admissions configuration, finance fee plans, document rules and template status. No external integration is required initially.</p>
+<p><strong>Edge cases:</strong> Rolling admissions, optional documents, centre-specific fees, late changes and emergency reopening. Version the checklist result and re-evaluate it when a dependency changes.</p>
+<p><strong>Module lesson:</strong> Admissions owns the activation decision but queries readiness from Academic Structure, Finance and Communications through explicit interfaces.</p>
+<h3>B. Student activity timeline as a read model</h3><span class="tag">NEXT · MEDIUM EFFORT</span>
+<p><strong>Problem and users:</strong> Staff move across application, enrolment, attendance, finance and communication screens to understand what happened. This increases support time and encourages broad database access.</p>
+<p><strong>Workflow:</strong> Each module emits a safe summary event—application submitted, offer accepted, enrolment activated, payment received, attendance corrected. A timeline projection stores only authorised display data. Staff see a chronological view with links to records they are permitted to open.</p>
+<p><strong>Benefits and measures:</strong> Faster investigation and fewer cross-module searches. Measure average case-handling time, screens visited per enquiry and timeline events without a resolvable source.</p>
+<p><strong>Data/integrations:</strong> Event type, occurred time, actor, student/person reference, centre, source record and display-safe summary. Begin with internal database events; a message broker is unnecessary for Phase 1.</p>
+<p><strong>Edge cases:</strong> Corrected or voided events, privacy-sensitive notes, duplicate delivery, out-of-order events, retention and permission changes. The timeline is a read model, not a second place to edit business records.</p>
+<p><strong>Module lesson:</strong> Reporting owns the projection; source modules remain the authority.</p>
+</section>
+<section id="news"><h2>3. News and development tools</h2>
+<div class="note">No sufficiently material item was verified in the past seven days, so this edition extends the window to <strong>30 days: 10 September–9 October 2026</strong>. Previously covered .NET, NuGet, DevExpress and React items are not repeated.</div>
+<h3>Visual Studio 2026 September update</h3>
+<p class="source">Published <strong>29 September 2026</strong> · <a href="https://devblogs.microsoft.com/visualstudio/visual-studio-september-update-power-your-workflow-with-your-model/">Official Microsoft announcement</a>.</p>
+<p><strong>Confirmed:</strong> The stable-channel update added preview Bring Your Own Model support, a Copilot action for NuGet Audit warnings, Git pull-request assistance, clearer highlighting of the deciding operand in C# compound conditions and Podman container attachment. The automated NuGet action requires GitHub Copilot and the built-in NuGet MCP server.</p>
+<p><strong>School relevance/use case:</strong> NuGet Audit visibility can help identify vulnerable packages in the new solution; branch highlighting can make permission conditions easier to debug.</p>
+<p><strong>Compatibility/licensing/cost:</strong> BYOM is preview and the announcement notes a breaking change from its earlier experience. Exact Copilot, model-provider, Visual Studio edition and infrastructure costs were not verified. Package changes still require human review and tests.</p>
+<p><strong>Recommendation: Evaluate.</strong> Update a non-production workstation first. Use NuGet suggestions as reviewable proposals; do not automatically accept version changes in the school system.</p>
+<h3>MariaDB Server 13.0.2 becomes Stable</h3>
+<p class="source">Stable on <strong>17 September 2026</strong> · <a href="https://mariadb.org/mariadb-foundation-newsletter-october-2026/">Official MariaDB Foundation newsletter</a>.</p>
+<p><strong>Confirmed:</strong> MariaDB describes 13.0.2 as Stable but a rolling release, not LTS, and points to 11.8 LTS when a longer maintenance window is the priority.</p>
+<p><strong>School relevance/use case:</strong> Your database baseline will hold long-lived admissions, fee and assessment records, so support duration and provider compatibility matter more than adopting the newest feature set.</p>
+<p><strong>Compatibility/licensing/cost:</strong> The current Pomelo 9.0.0 release notes do not list MariaDB 13 or EF Core 10 support. MariaDB Server edition/licence, hosting, backup and operational costs must be evaluated separately; no cost claim is made here.</p>
+<p><strong>Recommendation: Monitor.</strong> Do not select MariaDB 13 for Phase 1 until the chosen EF Core provider, DevExpress-related data paths, backup tools and hosting environment explicitly support the full version combination.</p>
+</section>
+<section id="behaviour"><h2>4. Current trends in system behaviour</h2>
+<h3>Permission-aware global search and quick actions</h3>
+<p>This is a recommended interaction pattern, not a measured claim about all schools. Staff increasingly work from a task or person rather than remembering which module contains the right page.</p>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Traditional behaviour</th><th>Improved behaviour</th></tr></thead><tbody>
+<tr><td>Reception receives a call</td><td>Choose module, screen and search field</td><td>Search name, student ID, application or receipt from one entry point</td></tr>
+<tr><td>Several matches exist</td><td>Open records one by one</td><td>Show type, centre, status and safe distinguishing details</td></tr>
+<tr><td>Staff lacks permission</td><td>Record appears, then access fails</td><td>Unauthorised records are omitted or safely represented</td></tr>
+<tr><td>Record is found</td><td>Return to menus for next step</td><td>Offer permitted actions such as View profile or Open application</td></tr>
+<tr><td>No match exists</td><td>Blank grid</td><td>Explain search tips and permitted next steps</td></tr>
+</tbody></table></div>
+<p><strong>Staff relevance:</strong> faster reception and support work. <strong>Student/parent relevance:</strong> faster answers and fewer repeated details, although public portals should normally search only the signed-in user’s own records.</p>
+<p><strong>Trade-offs:</strong> Search indexes, ranking, privacy, typo handling and permissions add complexity. Logging full search text may capture NRIC, phone numbers or other personal data; minimise and protect logs.</p>
+<p><strong>When unnecessary:</strong> A small module with one short list may be clearer with a normal filter. Do not replace predictable navigation entirely.</p>
+<p><strong>One small implementation:</strong> Build an internal quick search for Student ID and exact application reference first. Return a maximum result count, include record type and centre, enforce permissions in the server query and show a useful no-result state. Add fuzzy name search only after privacy and ranking rules are agreed.</p>
+</section>
+<section id="exercise"><h2>5. Today’s practical exercise</h2>
+<h3>Create a Phase 1 ownership map · 25 minutes</h3>
+<p>Use a document or spreadsheet; no production code is required.</p>
+<ol>
+<li><strong>5 minutes:</strong> List five Phase 1 modules: Identity &amp; Access, People, Academic Structure, Admissions and Enrolment.</li>
+<li><strong>5 minutes:</strong> Assign each key record to exactly one owner: StaffAccount, Person, Course, Intake, Application, Offer and Enrolment.</li>
+<li><strong>5 minutes:</strong> Write one command for each cross-module handoff, such as <code>AcceptOffer</code> or <code>CreateEnrolmentFromOffer</code>. Describe required inputs without copying entire database rows.</li>
+<li><strong>5 minutes:</strong> Mark every existing or proposed direct table write that crosses an ownership boundary. Replace one with a service/interface call in the design.</li>
+<li><strong>5 minutes:</strong> Check the solution structure above against your chosen stack. Write the exact .NET, EF Core, MariaDB provider, MariaDB Server and DevExpress versions that still require verification.</li>
+</ol>
+<p><strong>Verification:</strong> Every key record has one owner, every handoff has a named contract, no UI component owns business rules, and the version matrix contains no unverified compatibility assumption marked as approved.</p>
+</section>
+<div class="closing"><p><strong>Today’s key takeaway:</strong> Start with one deployable application, but make module ownership and dependency direction explicit from the first day.</p>
+<p><strong>Recommended next action:</strong> Approve the five-module Phase 1 map and verify one complete technology version combination before creating the production solution.</p>
+<p><strong>Tomorrow’s learning topic:</strong> Designing the People, Applicant, Student and Enrolment data model without duplicate identities.</p></div>
+<section id="sources"><h2>Official sources</h2><p>Clickable official sources and verified dates appear beside supported facts. Architecture, effort estimates, module scope and adoption recommendations are advisory. This fixed edition was researched on 9 October 2026.</p><p><a href="./briefing-2026-10-08.html">Previous lesson: testing school workflows before release</a></p></section></article></main></div><footer>School System Daily Learning · VB.NET · SQL Server · DevExpress · ASP.NET Core · React</footer></body></html>
